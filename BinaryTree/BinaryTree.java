@@ -8,28 +8,25 @@ public class BinaryTree {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
 		
-		SortedBinaryTree tree = new SortedBinaryTree(new Node(96));
+		SortedBinaryTree tree = new SortedBinaryTree(new Node(26));
 		
-		tree.insert(26);
-		tree.insert(120);
-		
-		tree.insert(32);
-		tree.insert(28);
+		tree.insert(58);
+		tree.insert(84);
+		tree.insert(81);
+		tree.insert(94);
+		tree.insert(69);
+		tree.insert(15);
 		tree.insert(29);
-		tree.insert(13);
+		tree.insert(39);
+		tree.insert(52);
+		tree.insert(33);
+		tree.insert(85);
 		
-		tree.insert(99);
-		tree.insert(130);
-		
-		System.out.println(tree.root.data);
-		System.out.println(tree.root.left.data);
-		System.out.println(tree.root.right.data);
-		
-		
-		tree.inOrderTraverse(tree.root);
+
+		tree.preOrderTraverse(tree.root);
 		System.out.println();
 		tree.delete(26);
-		tree.inOrderTraverse(tree.root);
+		tree.preOrderTraverse(tree.root);
 	}
 
 }
