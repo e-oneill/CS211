@@ -16,6 +16,7 @@ public class Wordle {
 	public static int attempts = 6;
 	public static int currAttempt = 0;
 	public static String target = "";
+	public static int[] targetChars = new int[26];
 	public static JDialog gameOver = new JDialog(windowFrame);
 	static String targetsFile = "C://CS210//wordleTargets.txt";
 	static Dictionary targets = new Dictionary(targetsFile);
@@ -34,12 +35,19 @@ public class Wordle {
 		currAttempt = 1;
 		
 		
-		
+		targetChars = new int[26];
         target = targets.getWord(rand.nextInt(targets.getSize())).toUpperCase();
+        System.out.println(target);
         HashMap<Integer, Character> targetHash = new HashMap<Integer, Character>(); //hashmap to store the charAt index and character
-        for (int i = 0; i < target.length(); i++)
+        for (int i = 0; i < target.length() - 1; i++)
         {
+        	targetChars[(int) (target.toLowerCase().charAt(i)) - 97]++;
+        	
         	targetHash.put(i,(Character) target.charAt(i));
+        }
+        for (int i = 0; i < 26; i++)
+        {
+        	System.out.print(targetChars[i] + ", ");
         }
         //the window is run here for thread safety
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -95,6 +103,7 @@ class WordleAttempt extends JPanel  {
 	protected static final String TextFieldString = "JTextField";
 	protected LinkedJTextField[] charFields; //array for holding the text field for each character
 	protected Character[] attempt; //array for holding the characters entered into each field
+	protected ArrayList<Character> attemptList = new ArrayList<Character>();
 	public WordleAttempt next = null; //the worldAttempts are a linkedlist, we use this data structure for traversal
 	
 	public WordleAttempt(int chars, HashMap<Integer, Character> targetHash) {
@@ -104,6 +113,8 @@ class WordleAttempt extends JPanel  {
 		attemptPanel.setLayout(new GridLayout(1, chars));
 		charFields = new LinkedJTextField[chars];
 		attempt = new Character[chars];
+		int[] attemptChars = new int[26];
+		
 		AbstractDocument abs;
 		for (int i = 0; i < chars; i++)	
 		{
@@ -167,6 +178,7 @@ class WordleAttempt extends JPanel  {
 						for (int j = 0; j < attempt.length; j++)
 						{
 							attemptWord += attempt[j];
+							
 							if (attempt[j] == null)
 							{
 								System.out.println("Null character found, aborting");
@@ -182,28 +194,29 @@ class WordleAttempt extends JPanel  {
 						
 						for (int i = 0; i < attempt.length; i++)
 						{
-							
-							
-							
-							if (targetHash.containsValue(attempt[i]))
-							{
+							int charCode = (int) (Character.toLowerCase(attempt[i])) - 97;
 								if (targetHash.get(i) == attempt[i])
 								{
+									attemptChars[charCode]++;
 									matches++;
 									charFields[i].setBackground(Color.GREEN);
 								}
-								else
-								{
+						}
+						for (int i = 0; i < attempt.length; i++)
+						{
+							int charCode = (int) (Character.toLowerCase(attempt[i])) - 97;
+							if (targetHash.containsValue(attempt[i]) && attemptChars[charCode] < Wordle.targetChars[charCode] && !(targetHash.get(i) == attempt[i]))
+							{
+									attemptChars[charCode]++;
 									charFields[i].setBackground(Color.ORANGE);
-								}
 							}
-							else
+							else if (!(targetHash.get(i) == attempt[i]))
 							{
 								charFields[i].setBackground(Color.DARK_GRAY);
 								charFields[i].setForeground(Color.WHITE);
 							}
-							Wordle.currAttempt++;
 						}
+						Wordle.currAttempt++;
 						if (next != null && matches != attempt.length)
 						{
 							next.enableTextFields();
