@@ -333,12 +333,7 @@ class WordleHelper {
 					thisWord++;
 				}
 				
-//				for (int i = 0; i < 5; i++)
-//				{
-//					if (word.charAt(j) == unknowns[i])
-//						containsUnknown=true;
-//						
-//				}
+
 				
 				if (word.charAt(j) == knowns[j])
 					thisWord += 2;
