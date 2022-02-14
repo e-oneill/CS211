@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Scanner;
 
 public class WorldeHelper {
@@ -54,15 +55,18 @@ public class WorldeHelper {
 			result[i] = sc.nextInt();
 		}
 		sc.nextLine();
+		int[] targetChars = new int[26];
 		
 		attemptHasChanged = false;
 		for (int i = 0; i < result.length; i++)
 		{
 			char c = attempt.charAt(i);
+			int cIndex = (int) Character.toLowerCase(c) - 97;
 			System.out.print(result[i] + " ");
 			if (result[i] == 2)
 			{
 				knowns[i] = c;
+				targetChars[cIndex]++;
 				if (!allKnownList.contains(knowns[i]))
 				allKnownList.add(knowns[i]);
 			}
@@ -70,6 +74,7 @@ public class WorldeHelper {
 			{
 				unknowns[i] = c;
 				unknownsList.add(unknowns[i]);
+				targetChars[cIndex]++;
 				if (!allKnownList.contains(unknowns[i]))
 				allKnownList.add(unknowns[i]);
 			}
@@ -78,6 +83,10 @@ public class WorldeHelper {
 				knownNot[i] = c;
 				if (!allKnownList.contains(c))
 				notInWord.add(c);
+				else
+				{
+					knownQuantities[cIndex] = Collections.frequency(allKnownList, c);
+				}
 			}
 		}
 		Iterator<String> iter = possibilities.iterator();
@@ -89,23 +98,18 @@ public class WorldeHelper {
 			int matches = 0;
 			boolean containsUnknown = false;
 			boolean removed = false;
+			int[] wordChars = new int[26];
 			for (int j = 0; j < 5; j++)
 			{
 				char c = word.charAt(j);
+				int cIndex = (int) Character.toLowerCase(c) - 97;
+				wordChars[cIndex]++;
 				if (notInWord.contains(c) || word.charAt(j) == unknowns[j] || knownNot[j] == c)
 				{
-//					possibilities.remove(s);
-//					System.out.println("Word excluded");
 					iter.remove();
 					removed = true;
 					break;
 				}
-//				if (word.charAt(j) == unknowns[j])
-//				{
-//					iter.remove();
-//					removed = true;
-//					break;
-//				}
 				
 				if (unknownsList.size() > 0)
 				{
@@ -118,23 +122,26 @@ public class WorldeHelper {
 					thisWord++;
 				}
 				
-//				for (int i = 0; i < 5; i++)
-//				{
-//					if (word.charAt(j) == unknowns[i])
-//						containsUnknown=true;
-//						
-//				}
-				
 				if (word.charAt(j) == knowns[j])
 					thisWord += 2;
-				
-				
+			}
+			for (int i = 0; i < 26; i++)
+			{
+				if ((targetChars[i] > 0 && wordChars[i] < targetChars[i]) || (knownQuantities[i] > 0 && wordChars[i] > knownQuantities[i]))
+				{
+					if (!removed)
+					{
+						removed = true;
+						iter.remove();
+					}
+					
+					continue;
+				}
 			}
 			if ((!containsUnknown && unknownsList.size() > 0) || matches < allKnownList.size())
 			{
 				if (!removed)
 				iter.remove();
-//				break;
 				continue;
 			}
 			if (thisWord > bestWord && !removed)
@@ -143,6 +150,11 @@ public class WorldeHelper {
 				attempt = word.substring(0, 5);
 				attemptHasChanged = true;
 			}
+		}
+		if (!attemptHasChanged)
+		{
+			Random rand = new Random();
+			attempt = possibilities.get(rand.nextInt(possibilities.size()));
 		}
 		
 //		System.out.println();
