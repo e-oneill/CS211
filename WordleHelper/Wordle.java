@@ -114,6 +114,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -216,6 +217,8 @@ class WordleHelper {
 	WordleAttempt[] attempts;
 	char[] knowns = new char[5];
 	char[] unknowns = new char[5];
+	static char[] knownNot = new char[5];
+	static int[] knownQuantities = new int[26];
 	ArrayList<Character> unknownsList = new ArrayList<Character>();
 	ArrayList<Character> allKnownList;
 	String[] unchangedPossibilities;
@@ -271,7 +274,7 @@ class WordleHelper {
 		
 	}
 	
-	public void getResult() {
+	public void getResult() {	
 		allKnownList = new ArrayList<Character>();
 		attemptHasChanged = false;
 		int[] result = attempts[currAttempt-1].attemptResult;
@@ -354,22 +357,31 @@ class WordleHelper {
 				attemptHasChanged = true;
 			}
 		}
-		
-		System.out.println();
+//		
+//		System.out.println();
+//		currAttempt++;
+//		
 		currAttempt++;
+//		System.out.println();
+		
+		
+		System.out.println("My best guess is now: " + attempt);
+		System.out.println("This has a " + (float) 1 / possibilities.size() * 100 + "% certainty of being the answer");
+		System.out.println();
 		
 		if (currAttempt <= 6)
-		{
-			makeAttempt();
-		}
-		if (currAttempt > 6)
-		{
-			for (int i = 0; i < result.length; i++)
 			{
-				System.out.print(knowns[i] + " ");
+				makeAttempt();
 			}
-		}
+			if (currAttempt > 6)
+			{
+				for (int i = 0; i < result.length; i++)
+				{
+					System.out.print(knowns[i] + " ");
+				}
+			}
 	}
+	
 }
 
 class WordleAttempt extends JPanel  {
@@ -626,6 +638,3 @@ class LinkedJTextField extends JFormattedTextField {
 	}
 }
 
-class VirtualKeyboard {
-	
-}

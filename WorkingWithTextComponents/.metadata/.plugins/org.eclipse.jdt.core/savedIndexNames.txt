@@ -1,0 +1,1 @@
+INDEX VERSION 1.131+C:\Users\eonei\OneDrive\Documents\GitHub\CS211\WorkingWithTextComponents\.metadata\.plugins\org.eclipse.jdt.core
