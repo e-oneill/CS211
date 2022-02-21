@@ -15,6 +15,8 @@ public class Brain {
 	static Dictionary valids = new Dictionary(validWords);
 	public static ArrayList<String> dictionary = new ArrayList<String>(Arrays.asList(valids.input));
 	static String attempt = "soare";
+	static ArrayList<Character> allKnownList = new ArrayList<Character>(); //moving this inside the method causes a bug
+	
 	
 	public static void main(String[] args) {
 		Scanner sc  = new Scanner(System.in);
@@ -36,7 +38,8 @@ public class Brain {
 	}
 	
 	public static void playWordle() {
-		Pattern pattern = Pattern.compile("[120]{5}", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("^[120]{5}$", Pattern.CASE_INSENSITIVE);
+		allKnownList = new ArrayList<Character>();
 		Scanner sc  = new Scanner(System.in);
 		attempt = guessWord("00000");
 		System.out.println(attempt);
@@ -72,7 +75,7 @@ public class Brain {
 		char[] knownNot = new char[5];
 		int[] targetChars = new int[26];
 		int[] knownQuantities = new int[26];
-		ArrayList<Character> allKnownList = new ArrayList<Character>();
+		
 		ArrayList<Character> unknownsList = new ArrayList<Character>();
 		ArrayList<Character> notInWord = new ArrayList<Character>();
 		
@@ -123,7 +126,7 @@ public class Brain {
 				}
 			}
 		}
-		System.out.println();
+//		System.out.println();
 		//endregion;
 		
 		Iterator<String> iter = dictionary.iterator();
@@ -131,7 +134,7 @@ public class Brain {
 		while (iter.hasNext())
 		{
 			ArrayList<Character> wordCharList = new ArrayList<Character>();
-			float wordScore = 0;
+//			float wordScore = 0;
 			String word = iter.next();
 			int thisWord = 0;
 			int matches = 0;
@@ -166,8 +169,14 @@ public class Brain {
 					thisWord++;
 				}
 				
-				if (word.charAt(j) == knowns[j])
+				if (c == knowns[j])
 					thisWord += 2;
+				else if (knowns[j] != '\u0000' && c != knowns[j]  )
+				{
+					iter.remove();
+					removed = true;
+					break;
+				}
 			}
 			for (int i = 0; i < 26; i++) //iterating through two alphabet-size arrays to remove when a character is present too many times, e.g. we know e is only in the word once but this word contains it twice
 			{
@@ -175,8 +184,10 @@ public class Brain {
 				{
 					if (!removed)
 					{
-						removed = true;
-						iter.remove();
+						removed = true; 
+						iter.remove(); //this removal is causing a bug right now
+						/* Worked out why this was causing a bug:
+						 * in the case where we are removing a letter that appears too often, if a 0 letter is before the 2, it causes all words to be removed */
 					}
 					
 					break;
