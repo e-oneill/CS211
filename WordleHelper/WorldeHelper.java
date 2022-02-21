@@ -40,19 +40,23 @@ public class WorldeHelper {
 		
 		for (int i = 1; i < 6; i++)
 		{
-			System.out.println("What did you guess?");
-			
-			attempt = sc.nextLine();
-			if (attempt.length() < 5 || attempt.length() > 5)
-			{
-				System.out.println("Invalid word provided, please retry");
-				attempt = sc.nextLine();
-			}
-			
-			result = getResultFromScanner();
-			checkAttempt(result);
-			
+			getAttempt();
 		}
+	}
+	
+	public static void getAttempt() 
+	{
+		System.out.println("What did you guess?");
+		
+		attempt = sc.nextLine();
+		if (attempt.length() < 5 || attempt.length() > 5)
+		{
+			System.out.println("Invalid word provided, please retry");
+			attempt = sc.nextLine();
+		}
+		
+		result = getResultFromScanner();
+		checkAttempt(result);
 	}
 	
 	public static int[] getResultFromScanner() { //breaking this into methods with arguments and returns to make it easier to use with hackerrank next week
