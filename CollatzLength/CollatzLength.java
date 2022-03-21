@@ -1,7 +1,7 @@
 package CollatzLength;
 
 public class CollatzLength {
-	static int[] values = {6, 2, 3, 3, 4, 5, 9};
+	static int[] values = {1, 2, 7, 9, 11, 12, 13, 14, 15};
 	static int[] collatzArray = new int [values.length];
 	
 	public static void main(String[] args) {
@@ -17,7 +17,6 @@ public class CollatzLength {
 		
 		
 		quickSort(0, collatzArray.length-1);
-		
 		for (int i=0; i < values.length; i++)
 		{
 			System.out.print(values[i] + " (" + collatzArray[i] + ")");
@@ -26,6 +25,27 @@ public class CollatzLength {
 			else
 				System.out.println();
 		}
+		int target = findTarget(2);
+		System.out.println(values[target]);
+		
+	}
+
+	public static int findTarget(int num) {
+		int target = collatzArray[num];
+		int tracker = num;
+		for (int i = num; i < collatzArray.length; i++)
+		{
+			if (collatzArray[i] > collatzArray[num])
+			{
+				break;
+			}
+			if (values[i] < values[num])
+			{
+				tracker = i;
+			}
+		}
+
+		return tracker;
 	}
 	
 	public static int getCollatzLength(int num) {
@@ -96,7 +116,7 @@ public class CollatzLength {
 				if (collatzArray[middle] > collatzArray[right])
 					swap(middle, right);
 				long pivot = collatzArray[right];
-				System.out.println(right + ":" + pivot);
+				// System.out.println(right + ":" + pivot);
 				int partition = partitionIt(left,right,pivot);
 				quickSort(left, partition -1);
 				quickSort(partition+1, right);

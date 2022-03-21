@@ -48,7 +48,7 @@ public class Solution {
 	
     public static void main (String args[])
     {
-    	String[] input = input4;
+    	String[] input = input1;
     	
     	long[] publicKeyArr = decomposeString(input[0], "\\s");
     	long[] receiverArr = decomposeString(input[1], "\\s");
@@ -107,7 +107,7 @@ public class Solution {
     	long c = modPow(g, power, p);
     	for (double j = 0; j < n; j++)
     	{
-    		long y = (long) (h * Math.pow(c, j) % p);
+    		long y = (long) (h * modPow(c, (long) j, p) % p);
     		if (babyTable.contains(y))
     		{
     			x = (long) (j * n + babyTable.indexOf(y));
