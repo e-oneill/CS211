@@ -8,7 +8,7 @@ public class Solution {
 	{
 		//setup the test data to use
 		String[] test;
-		test = test1;
+		test = test2;
 		//get the nearest prime number to double the size
 		int size = getNearestPrime(test.length *2);
 		
