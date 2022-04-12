@@ -89,26 +89,83 @@ public class Solution {
             "XXX XXXXXXXXXXXXXX X",
             "XXX XXXXXXXXXXXXXXXX",
 	};
+
+	public static String[] maze5 = {
+		"XXXXXXXXXXXXXXXXXX X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "XXX XXXXXXXXXXXXXXXX",
+	};
+
+	public static String[] maze6 = {
+		"X XXXXXXXXXXXXXXXXXX",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "X                  X",
+        "XXXXXXXXXXXXXXXXXX X",
+	};
 	
-//	//maze 1 settings
-//	public static String[] maze = maze1;
-//	static int[] curr = {0, 8}; //starting position
-//	static int[] target = {7, 9};
 	
-//	//maze 2 settings
-//	public static String[] maze = maze2;
-//	static int[] curr = {19, 3};
-//	static int[] target = {2, 0};
+	// //maze 1 settings
+	// public static String[] maze = maze1;
+	// static int[] curr = {0, 8}; //starting position
+	// static int[] target = {7, 9};
+	
+	//maze 2 settings
+	// public static String[] maze = maze2;
+	// static int[] curr = {19, 3};
+	// static int[] target = {2, 0};
 	
 //	//maze 3 settings 
-//	public static String[] maze = maze3;
-//	static int[] curr = {19, 3};
-//	static int[] target = {0, 18};
+	// public static String[] maze = maze3;
+	// static int[] curr = {19, 3};
+	// static int[] target = {0, 18};
 	
-	//maze 4 settings 
-		public static String[] maze = maze4;
-		static int[] curr = {19, 3};
-		static int[] target = {0, 18};
+	// //maze 4 settings 
+	// 	public static String[] maze = maze4;
+	// 	static int[] curr = {19, 3};
+	// 	static int[] target = {0, 18};
+
+	// //maze 5 settings 
+		// public static String[] maze = maze5;
+		// static int[] curr = {19, 3};
+		// static int[] target = {0, 18};
+
+	// //maze 6 settings 
+		public static String[] maze = maze6;
+		static int[] curr = {19, 18};
+		static int[] target = {0, 1};
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -275,20 +332,6 @@ public class Solution {
 			lastMove = "north";
 //			return lastMove;
 		}
-		else if (((south && (!north && !east && !west)) || (south && lastMove != "north")) && (currTile.south == null || !currTile.south.deadEnd))
-		{
-			if (south && 
-					((!north || (currTile.north != null && currTile.north.deadEnd)) 
-					&& (!east || (currTile.east != null && currTile.east.deadEnd)) 
-					&& (!west || (currTile.west != null && currTile.west.deadEnd))) 
-//					&& lastMove == "north"
-					)
-			{
-				currTile.deadEnd = true;
-			}
-			lastMove = "south";
-//			return lastMove;
-		}
 		else if (((east && (!north && !south && !west)) || (east && lastMove != "west")) && (currTile.east == null || !currTile.east.deadEnd))
 		{
 			if (east && 
@@ -317,6 +360,22 @@ public class Solution {
 			lastMove = "west";
 //			return lastMove;
 		}
+		else if (((south && (!north && !east && !west)) || (south && lastMove != "north")) && (currTile.south == null || !currTile.south.deadEnd))
+		{
+			if (south && 
+					((!north || (currTile.north != null && currTile.north.deadEnd)) 
+					&& (!east || (currTile.east != null && currTile.east.deadEnd)) 
+					&& (!west || (currTile.west != null && currTile.west.deadEnd))) 
+//					&& lastMove == "north"
+					)
+			{
+				currTile.deadEnd = true;
+			}
+			lastMove = "south";
+//			return lastMove;
+		}
+		
+		
 		last = currTile;
 		return lastMove;
 		//we have reached a dead-end;
