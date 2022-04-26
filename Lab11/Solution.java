@@ -112,10 +112,14 @@ class Brain {
 			for (int i = 0; i < word.length(); i++)
 			{
 				//start by checking if the word should be removed
-				if ((knowns[i] != '_' && word.charAt(i) != knowns[i]) || (guesses.contains(word.charAt(i)) && word.charAt(i) != knowns[i]))
+				if (
+						//word doesn't contain a known character in a known position
+						(knowns[i] != '_' && word.charAt(i) != knowns[i]) 
+						|| 
+						//word contains known character in wrong position
+						(guesses.contains(word.charAt(i)) && word.charAt(i) != knowns[i])
+						)
 				{
-//					System.out.println(knowns[i]);
-					//we know a character is here but this word doesn't have it;
 					iter.remove();
 					continue iterator;
 				}
